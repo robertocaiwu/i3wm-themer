@@ -1,0 +1,5 @@
+i3-config: /home/rob/.config/i3/config
+polybar-config: /home/rob/.config/polybar/config
+xresources: /home/rob/.Xresources
+nitrogen-config: /home/rob/.config/nitrogen/bg-saved.cfg
+wallpaper-path: /home/rob/.config/nitrogen/

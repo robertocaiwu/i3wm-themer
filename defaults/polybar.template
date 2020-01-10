@@ -3,9 +3,9 @@ width = 100%
 height = 27
 radius = 0
 fixed-center = false
-
-background = #272827
-foreground = #657b83
+bottom = true
+background = #1e1e20
+foreground = #c5c8c6
 
 line-size = 3
 line-color =
@@ -25,12 +25,13 @@ font-2 = "Font Awesome 5 Brands:size=10;1"
 
 modules-left = i3
 modules-center = date
-modules-right = wlan eth powermenu
+modules-right = cpu battery wlan eth pulseaudio backlight 
+#powermenu
 
 tray-position =
 ;tray-padding =
 wm-restack = i3
-override-redirect = true
+override-redirect = false
 
 cursor-click = pointer
 cursor-scroll = ns-resize
@@ -41,62 +42,185 @@ format = <label-state> <label-mode>
 index-sort = true
 wrapping-scroll = false
 
-label-mode-padding = 2
-label-mode-foreground = #657b83
-label-mode-background = #272827
+label-mode-padding = 1
+label-mode-foreground = #1e1e20
+label-mode-background = #e39866
 
-label-focused = %index%
-label-focused-background = #4E524F
-label-focused-foreground = #272827
-label-focused-padding = 2
+label-focused = %name%
+label-focused-background = #dc7f41
+label-focused-foreground = #6b7443
+label-focused-padding = 1
 
 label-unfocused = %index%
-label-unfocused-background = #7E807E
-label-unfocused-foreground = #272827
-label-unfocused-padding = 2
+label-unfocused-background = #e39866
+label-unfocused-foreground = #1e1e20
+label-unfocused-padding = 3
 
-label-visible = %index%
-label-visible-background = #7E807E
-label-visible-foreground = #272827
-label-visible-padding = 2
+label-visible = %name%
+label-visible-background = #e39866
+label-visible-foreground = #1e1e20
+label-visible-padding = 1
 
-label-urgent = %index%
+label-urgent = %name%
 label-urgent-background = #BA2922
-label-urgent-padding = 2
+label-urgent-padding = 1
+
+[module/cpu]
+type = internal/cpu
+
+; Seconds to sleep between updates
+; Default: 1
+interval = 1
+; Available tags:
+;   <label> (default)
+;   <bar-load>
+;   <ramp-load>
+;   <ramp-coreload>
+format = <label> <ramp-coreload>
+
+; Available tokens:
+;   %percentage% (default) - total cpu load averaged over all cores
+;   %percentage-sum% - Cumulative load on all cores
+;   %percentage-cores% - load percentage for each core
+;   %percentage-core[1-9]% - load percentage for specific core
+label = CPU %percentage%%
+
+; Spacing between individual per-core ramps
+ramp-coreload-spacing = 1
+ramp-coreload-0 = ▁
+ramp-coreload-1 = ▂
+ramp-coreload-2 = ▃
+ramp-coreload-3 = ▄
+ramp-coreload-4 = ▅
+ramp-coreload-5 = ▆
+ramp-coreload-6 = ▇
+ramp-coreload-7 = █
+
+[module/battery]
+type = internal/battery
+
+; This is useful in case the battery never reports 100% charge
+full-at = 99
+
+; Use the following command to list batteries and adapters:
+; $ ls -1 /sys/class/power_supply/
+battery = BAT0
+adapter = AD
+
+poll-interval = 5
+
+; see "man date" for details on how to format the time string
+; NOTE: if you want to use syntax tags here you need to use %%{...}
+; Default: %H:%M:%S
+time-format = %H:%M
+
+; Available tags:
+;   <label-charging> (default)
+;   <bar-capacity>
+;   <ramp-capacity>
+;   <animation-charging>
+format-charging = <animation-charging> <label-charging>
+
+; Available tags:
+;   <label-discharging> (default)
+;   <bar-capacity>
+;   <ramp-capacity>
+;   <animation-discharging>
+format-discharging = <ramp-capacity> <label-discharging>
+
+; Available tags:
+;   <label-full> (default)
+;   <bar-capacity>
+;   <ramp-capacity>
+;format-full = <ramp-capacity> <label-full>
+
+; Available tokens:
+;   %percentage% (default) - is set to 100 if full-at is reached
+;   %percentage_raw%
+;   %time%
+;   %consumption% (shows current charge rate in watts)
+label-charging = Charging %percentage%%
+
+; Available tokens:
+;   %percentage% (default) - is set to 100 if full-at is reached
+;   %percentage_raw%
+;   %time%
+;   %consumption% (shows current discharge rate in watts)
+label-discharging = Discharging %percentage%%
+
+; Available tokens:
+;   %percentage% (default) - is set to 100 if full-at is reached
+;   %percentage_raw%
+label-full = Fully charged
+
+; Only applies if <ramp-capacity> is used
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+
+; Only applies if <bar-capacity> is used
+bar-capacity-width = 1
+
+; Only applies if <animation-charging> is used
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+; Framerate in milliseconds
+animation-charging-framerate = 750
+
+; Only applies if <animation-discharging> is used
+animation-discharging-0 = 
+animation-discharging-1 = 
+animation-discharging-2 = 
+animation-discharging-3 = 
+animation-discharging-4 = 
+; Framerate in milliseconds
+animation-discharging-framerate = 500
 
 [module/wlan]
 type = internal/network
-interface = net1
+interface = wlp3s0
 interval = 3.0
 
 format-connected = <ramp-signal> <label-connected>
-format-connected-foreground = #272827
+format-connected-padding = 1
+fmt-connected-foreground = #272827
 format-connected-background = #7E807E
-format-connected-padding = 2
-label-connected = %essid%
+forrmat-connected-prefix = 
+format-connected-prefix-foreground = #272827
+label-connected = %{A1:nm-applet:}%essid% %local_ip%%downspeed:9%%{A}
+label-connected-foreground = #eefafafa
 
-format-disconnected =
+format-disconnected = <label-disconnected>
+label-disconnected = Disconnected
+label-disconnected-foreground = #66ffffff
 
 ramp-signal-0 = 
 ramp-signal-1 = 
 ramp-signal-2 = 
 ramp-signal-3 = 
 ramp-signal-4 = 
-ramp-signal-foreground = #272827
 
 [module/eth]
 type = internal/network
-interface = enp0s3
+interface = enp0s25
 interval = 3.0
 
-format-connected-padding = 2
+format-connected-padding = 1
 format-connected-foreground = #272827
 format-connected-background = #7E807E
 format-connected-prefix = " "
 format-connected-prefix-foreground = #272827
-label-connected = %local_ip%
+label-connected = %local_ip%%downspeed:9%
+label-connected-foreground = #eefafafa
 
-format-disconnected =
+format-disconnected = <label-disconnected>
+label-disconnected = LAN Disconnected
+label-disconnected-foreground = #66ffffff
 
 [module/date]
 type = internal/date
@@ -109,11 +233,58 @@ time = %H:%M
 time-alt = %H:%M:%S
 
 format-prefix = 
-format-foreground = #272827
-format-background = #7E807E
+format-foreground = #1e1e20
+format-background = #c6723a
 format-padding = 2
 
 label = %date% %time%
+
+[module/pulseaudio]
+type = internal/pulseaudio
+
+sink = alsa_output.pci-0000_12_00.3.analog-stereo
+
+use-ui-max = true
+
+interval = 5
+
+format-volume = <ramp-volume> <label-volume>
+
+format-muted = <label-muted>
+
+label-volume = %percentage%%
+
+
+label-muted = 🔇 mute
+label-muted-foreground = #666
+ramp-volume-0 = 🔈
+ramp-volume-1 = 🔉
+ramp-volume-2 = 🔊
+
+click-right = pavucontrol &
+
+[module/backlight]
+type = internal/xbacklight
+
+output = eDP1
+
+enable-scroll = false
+format = <label> 
+
+label = Brightness %percentage%% 
+
+; Only applies if <ramp> is used
+ramp-0 = 🌕
+ramp-1 = 🌔
+ramp-2 = 🌓
+ramp-3 = 🌒
+ramp-4 = 🌑
+
+; Only applies if <bar> is used
+bar-width = 10
+bar-indicator = |
+bar-fill = ─
+bar-empty = ─
 
 [module/powermenu]
 type = custom/menu
@@ -123,11 +294,11 @@ expand-right = true
 format-spacing = 1
 
 label-open = 
-label-open-foreground = #657b83
+label-open-foreground = #e39866
 label-close =  cancel
-label-close-foreground = #BA2922
+label-close-foreground = #e39866
 label-separator = |
-label-separator-foreground = #BA2922
+label-separator-foreground = #e6a57a
 
 menu-0-0 = reboot
 menu-0-0-exec = menu-open-1
