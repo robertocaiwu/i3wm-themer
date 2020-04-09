@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/bash
 
 ### 20180515 Script written and fully commented by James Shane ( github.com/jamesshane )
 
@@ -74,26 +74,26 @@ rm -fr i3-gaps
 
 # Added binutils,gcc,make,pkg-config,fakeroot for compilations, removed yaourt
 packagelist=(
-    git 
-    nitrogen 
-    rofi 
-    python-pip 
-    python3-pip
-    binutils 
-    gcc 
-    make 
-    pkg-config 
-    fakeroot 
-    cmake 
-    python-xcbgen 
-    xcb-proto 
-    libxcb-ewmh-dev 
-    wireless-tools 
-    libiw-dev 
-    libasound2-dev 
-    libpulse-dev 
-    libcurl4-openssl-dev 
-    libmpdclient-dev
+  git 
+  nitrogen 
+  rofi 
+  python-pip 
+  python3-pip
+  binutils 
+  gcc 
+  make 
+  pkg-config 
+  fakeroot 
+  cmake 
+  python-xcbgen 
+  xcb-proto 
+  libxcb-ewmh-dev 
+  wireless-tools 
+  libiw-dev 
+  libasound2-dev 
+  libpulse-dev 
+  libcurl4-openssl-dev 
+  libmpdclient-dev
 )
 
 # Refresh and install apt
