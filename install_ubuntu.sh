@@ -9,12 +9,38 @@ else
   sudo ln -s /usr/bin/env /bin/env
 fi
 
-# Refresh apt
-sudo apt update
+# create list of packages to install
+packagelist=(
+    libxcb1-dev 
+    libxcb-keysyms1-dev 
+    libpango1.0-dev 
+    libxcb-composite0-dev 
+    libxcb-util0-dev 
+    libxcb-icccm4-dev 
+    libyajl-dev 
+    libstartup-notification0-dev 
+    libxcb-randr0-dev 
+    libev-dev 
+    libxcb-cursor-dev 
+    libxcb-xinerama0-dev 
+    libxcb-xkb-dev 
+    libxkbcommon-dev 
+    libxkbcommon-x11-dev 
+    autoconf 
+    xutils-dev 
+    dh-autoreconf 
+    unzip 
+    git 
+    xbacklight 
+    compton
+)
 
-sudo apt-get install libxcb1-dev libxcb-keysyms1-dev libpango1.0-dev libxcb-composite0-dev libxcb-util0-dev libxcb-icccm4-dev libyajl-dev libstartup-notification0-dev libxcb-randr0-dev libev-dev libxcb-cursor-dev libxcb-xinerama0-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev autoconf xutils-dev dh-autoreconf unzip git xbacklight compton -y
+# Refresh and install apt
+sudo apt update
+sudo apt install -y ${packagelist[@]}
 
 git clone --recursive https://github.com/Airblader/xcb-util-xrm.git
+
 # shellcheck disable=SC2164
 cd xcb-util-xrm/
 ./autogen.sh
@@ -47,11 +73,35 @@ cd ../..
 rm -fr i3-gaps
 
 # Added binutils,gcc,make,pkg-config,fakeroot for compilations, removed yaourt
-sudo apt install git nitrogen rofi python-pip binutils gcc make pkg-config fakeroot cmake python-xcbgen xcb-proto libxcb-ewmh-dev wireless-tools libiw-dev libasound2-dev libpulse-dev libcurl4-openssl-dev libmpdclient-dev -y
+packagelist=(
+    git 
+    nitrogen 
+    rofi 
+    python-pip 
+    python3-pip
+    binutils 
+    gcc 
+    make 
+    pkg-config 
+    fakeroot 
+    cmake 
+    python-xcbgen 
+    xcb-proto 
+    libxcb-ewmh-dev 
+    wireless-tools 
+    libiw-dev 
+    libasound2-dev 
+    libpulse-dev 
+    libcurl4-openssl-dev 
+    libmpdclient-dev
+)
+
+# Refresh and install apt
+sudo apt install -y ${packagelist[@]}
 
 # Added PYTHONDONTWRITEBYTECODE to prevent __pycache__
 export PYTHONDONTWRITEBYTECODE=1
-sudo -H pip install -r requirements.txt
+sudo -H pip3 install -r requirements.txt 
 
 [ -d /usr/share/fonts/opentype ] || sudo mkdir /usr/share/fonts/opentype
 sudo git clone https://github.com/adobe-fonts/source-code-pro.git /usr/share/fonts/opentype/scp
@@ -117,11 +167,11 @@ sed -i -e "s/USER/$USER/g" config.yaml
 
 # Backup
 mkdir "$HOME"/Backup
-python i3wm-themer.py --config config.yaml --backup "$HOME"/Backup
+python3 i3wm-themer.py --config config.yaml --backup "$HOME"/Backup
 
 # Configure and set theme to default
 cp -r scripts/* /home/"$USER"/.config/polybar/
-python i3wm-themer.py --config config.yaml --install defaults/
+python3 i3wm-themer.py --config config.yaml --install defaults/
 
 echo ""
 echo "Read the README.md"
