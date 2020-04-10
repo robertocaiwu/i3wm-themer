@@ -11,6 +11,7 @@ fi
 
 # create list of packages to install
 packagelist=(
+    libcairo2-dev
     libxcb1-dev 
     libxcb-keysyms1-dev 
     libpango1.0-dev 
@@ -94,6 +95,8 @@ packagelist=(
   libpulse-dev 
   libcurl4-openssl-dev 
   libmpdclient-dev
+  i3-wn
+  libjsoncpp-dev
 )
 
 # Refresh and install apt
