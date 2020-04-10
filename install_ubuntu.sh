@@ -34,6 +34,32 @@ packagelist=(
     git 
     xbacklight 
     compton
+    nitrogen 
+    rofi 
+    python-pip 
+    python3-pip
+    binutils 
+    gcc 
+    make 
+    pkg-config 
+    fakeroot 
+    cmake 
+    python-xcbgen 
+    xcb-proto 
+    libxcb-ewmh-dev 
+    wireless-tools 
+    libiw-dev 
+    libasound2-dev 
+    libpulse-dev 
+    libcurl4-openssl-dev 
+    libmpdclient-dev
+    i3-wm
+    i3blocks
+    i3status
+    libjsoncpp-dev
+    cmake
+    yad
+    xdotool
 )
 
 # Refresh and install apt
@@ -72,35 +98,6 @@ sudo make install
 # ls -l /usr/bin/i3
 cd ../..
 rm -fr i3-gaps
-
-# Added binutils,gcc,make,pkg-config,fakeroot for compilations, removed yaourt
-packagelist=(
-  git 
-  nitrogen 
-  rofi 
-  python-pip 
-  python3-pip
-  binutils 
-  gcc 
-  make 
-  pkg-config 
-  fakeroot 
-  cmake 
-  python-xcbgen 
-  xcb-proto 
-  libxcb-ewmh-dev 
-  wireless-tools 
-  libiw-dev 
-  libasound2-dev 
-  libpulse-dev 
-  libcurl4-openssl-dev 
-  libmpdclient-dev
-  i3-wn
-  libjsoncpp-dev
-)
-
-# Refresh and install apt
-sudo apt install -y ${packagelist[@]}
 
 # Added PYTHONDONTWRITEBYTECODE to prevent __pycache__
 export PYTHONDONTWRITEBYTECODE=1
