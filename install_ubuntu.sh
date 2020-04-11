@@ -55,11 +55,13 @@ packagelist=(
     libmpdclient-dev
     i3-wm
     i3blocks
+    i3lock
     i3status
     libjsoncpp-dev
     cmake
     yad
     xdotool
+    blueman
 )
 
 # Refresh and install apt
@@ -173,6 +175,6 @@ python3 i3wm-themer.py --config config.yaml --backup "$HOME"/Backup
 cp -r scripts/* /home/"$USER"/.config/polybar/
 python3 i3wm-themer.py --config config.yaml --install defaults/
 
-python3 i3wm-themer.py --config config.yaml --load themes/11.json
+python3 i3wm-themer.py --config config.yaml --load themes/011.json
 echo ""
 echo "Read the README.md"
