@@ -83,11 +83,10 @@ class ConfigurationLoader:
         if FileUtils.locate_file(self.filepath):
             logger.warning('Located the config file')
             config_path = open(self.filepath, 'r')
-            config = yaml.load_all(config_path)
-
+            config = yaml.safe_load(config_path)
+            
             for conf in config:
-                for n, v in conf.items():
-                    configuration[n] = v
+                configuration[conf] = config[conf]
 
         else:
             logger.error('Failed to locate the config file')
