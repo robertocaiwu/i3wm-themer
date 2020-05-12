@@ -1,6 +1,74 @@
-[bar/i3wmthemer_bar]
+;----------------------------------------------------------
+;		        C O L O R S
+;----------------------------------------------------------
+; 100%: FF - 95%: F2 - 90%: E6 - 85%: D9 - 80%: CC - 75%: BF - 70%: B3 - 65%: A6 - 60%: 99 - 55%: 8C 
+; 50%: 80 - 45%: 73 - 40%: 66 - 35%: 59 - 30%: 4D - 25%: 40 - 20%: 33 - 15%: 26 - 10%: 1A - 5%: 0D - 0%: 00
+
+[colors]
+trans = #66000000
+foreground = #D8DEE9
+background = #2E3440
+unfocused = #a8adb5
+urgent = #BF616A
+destaque = #8fbcbb
+
+;----------------------------------------------------------
+;		        S E T T I N G S
+;----------------------------------------------------------
+[settings]
+screenchange-reload = true
+
+[global/wm]
+margin-top = 0
+margin-bottom = 0
+
+;----------------------------------------------------------
+;		        B A R / T O P
+;----------------------------------------------------------
+[bar/top]
+monitor = ${env:MONITOR:}
 width = 100%
-height = 27
+height = 20
+radius = 0
+fixed-center = true
+bottom = false
+background = #1e1e20
+foreground = #c5c8c6
+line-size = 3
+line-color =
+
+border-size = 0
+border-color =
+
+padding-left = 0
+padding-right = 1
+
+module-margin-left = 1
+module-margin-right = 1
+
+font-0 = "Source Code Pro Semibold:size=10;1"
+font-1 = "Font Awesome 5 Free:style=Solid:size=10;1"
+font-2 = "Font Awesome 5 Brands:size=10;1"
+
+modules-left = 
+modules-center = date-calendar
+modules-right = i3status powermenu
+
+tray-position = right
+tray-padding = 12
+wm-restack = i3
+override-redirect = false
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+;----------------------------------------------------------
+;		        B A R / B O T T O M
+;----------------------------------------------------------
+[bar/bottom]
+monitor = ${env:MONITOR:}
+width = 100%
+height = 25
 radius = 0
 fixed-center = false
 bottom = true
@@ -14,30 +82,33 @@ border-size = 0
 border-color =
 
 padding-left = 0
-padding-right = 2
+padding-right = 1
 
 module-margin-left = 1
-module-margin-right = 2
+module-margin-right = 1
 
 font-0 = "Source Code Pro Semibold:size=10;1"
 font-1 = "Font Awesome 5 Free:style=Solid:size=10;1"
 font-2 = "Font Awesome 5 Brands:size=10;1"
 
 modules-left = i3
-modules-center = date
-modules-right = cpu battery wlan eth pulseaudio backlight 
-#powermenu
+modules-center = 
+modules-right = cpu memory filesystem battery0 battery1 wlan eth pulseaudio backlight 
 
-tray-position =
-;tray-padding =
+tray-position = 
+;tray-padding = 10
 wm-restack = i3
 override-redirect = false
 
 cursor-click = pointer
 cursor-scroll = ns-resize
 
+;----------------------------------------------------------
+;		        M O D U L E / i 3
+;----------------------------------------------------------
 [module/i3]
 type = internal/i3
+pin-workspaces = true
 format = <label-state> <label-mode>
 index-sort = true
 wrapping-scroll = false
@@ -54,7 +125,7 @@ label-focused-padding = 1
 label-unfocused = %index%
 label-unfocused-background = #e39866
 label-unfocused-foreground = #1e1e20
-label-unfocused-padding = 3
+label-unfocused-padding = 2
 
 label-visible = %name%
 label-visible-background = #e39866
@@ -65,25 +136,35 @@ label-urgent = %name%
 label-urgent-background = #BA2922
 label-urgent-padding = 1
 
+;----------------------------------------------------------
+;		        M O D U L E / i 3 S T A T U S
+;----------------------------------------------------------
+[module/i3status]
+type = custom/script
+exec = i3status
+interval = 2
+format-underline = #00000000
+format-prefix = "🖧 "
+format-prefix-foreground = #5b
+
+;----------------------------------------------------------
+;		        M O D U L E / C P U
+;----------------------------------------------------------
 [module/cpu]
 type = internal/cpu
 
-; Seconds to sleep between updates
-; Default: 1
-interval = 1
-; Available tags:
+interval = 0.5
 ;   <label> (default)
 ;   <bar-load>
 ;   <ramp-load>
 ;   <ramp-coreload>
 format = <label> <ramp-coreload>
 
-; Available tokens:
 ;   %percentage% (default) - total cpu load averaged over all cores
 ;   %percentage-sum% - Cumulative load on all cores
 ;   %percentage-cores% - load percentage for each core
 ;   %percentage-core[1-9]% - load percentage for specific core
-label = CPU %percentage%%
+label =  %percentage%%
 
 ; Spacing between individual per-core ramps
 ramp-coreload-spacing = 1
@@ -96,7 +177,80 @@ ramp-coreload-5 = ▆
 ramp-coreload-6 = ▇
 ramp-coreload-7 = █
 
-[module/battery]
+;----------------------------------------------------------
+;                       M O D U L E / M E M O R Y
+;----------------------------------------------------------
+[module/memory]
+type = internal/memory
+
+interval = 1
+format = <label>
+
+label = |   %gb_used%
+
+bar-used-indicator =
+bar-used-width = 50
+bar-used-foreground-0 = #55aa55
+bar-used-foreground-1 = #557755
+bar-used-foreground-2 = #f5a70a
+bar-used-foreground-3 = #ff5555
+bar-used-fill = ▐
+bar-used-empty = ▐
+bar-used-empty-foreground = #444444
+
+ramp-used-0 = ▁
+ramp-used-1 = ▂
+ramp-used-2 = ▃
+ramp-used-3 = ▄
+ramp-used-4 = ▅
+ramp-used-5 = ▆
+ramp-used-6 = ▇
+ramp-used-7 = █
+;----------------------------------------------------------
+;		        M O D U L E / F I L E S Y S T E M 
+;----------------------------------------------------------
+[module/filesystem]
+type = internal/fs
+
+; Mountpoints to display
+mount-0 = /
+
+interval = 30
+fixed-values = true
+
+spacing = 2
+; Available tags:
+;   <label-mounted> (default)
+;   <bar-free>
+;   <bar-used>
+;   <ramp-capacity>
+format-mounted = <label-mounted>
+
+; Available tags:
+;   <label-unmounted> (default)
+format-unmounted = <label-unmounted>
+
+; Available tokens:
+;   %mountpoint%
+;   %type%
+;   %fsname%
+;   %percentage_free%
+;   %percentage_used%
+;   %total%
+;   %free%
+;   %used%
+; Default: %mountpoint% %percentage_free%%
+label-mounted = |  %free% left |
+label-mounted-foreground = 
+
+; Available tokens:
+label-unmounted = %mountpoint%: not mounted
+label-unmounted-foreground = #55
+
+;----------------------------------------------------------
+;		        M O D U L E / B A T T E R Y 0
+;----------------------------------------------------------
+[module/battery0]
 type = internal/battery
 
 ; This is useful in case the battery never reports 100% charge
@@ -109,49 +263,19 @@ adapter = AD
 
 poll-interval = 5
 
-; see "man date" for details on how to format the time string
-; NOTE: if you want to use syntax tags here you need to use %%{...}
-; Default: %H:%M:%S
 time-format = %H:%M
 
-; Available tags:
-;   <label-charging> (default)
-;   <bar-capacity>
-;   <ramp-capacity>
-;   <animation-charging>
-format-charging = <animation-charging> <label-charging>
+format-charging = <animation-charging> <label-charging> |
 
-; Available tags:
-;   <label-discharging> (default)
-;   <bar-capacity>
-;   <ramp-capacity>
-;   <animation-discharging>
-format-discharging = <ramp-capacity> <label-discharging>
+format-discharging = <ramp-capacity> <label-discharging> |
 
-; Available tags:
-;   <label-full> (default)
-;   <bar-capacity>
-;   <ramp-capacity>
 ;format-full = <ramp-capacity> <label-full>
 
-; Available tokens:
-;   %percentage% (default) - is set to 100 if full-at is reached
-;   %percentage_raw%
-;   %time%
-;   %consumption% (shows current charge rate in watts)
-label-charging = Charging %percentage%%
+label-charging = %percentage%%
 
-; Available tokens:
-;   %percentage% (default) - is set to 100 if full-at is reached
-;   %percentage_raw%
-;   %time%
-;   %consumption% (shows current discharge rate in watts)
-label-discharging = Discharging %percentage%%
+label-discharging = %percentage%% 
 
-; Available tokens:
-;   %percentage% (default) - is set to 100 if full-at is reached
-;   %percentage_raw%
-label-full = Fully charged
+label-full =  Fully charged
 
 ; Only applies if <ramp-capacity> is used
 ramp-capacity-0 = 
@@ -181,10 +305,79 @@ animation-discharging-4 = 
 ; Framerate in milliseconds
 animation-discharging-framerate = 500
 
+;----------------------------------------------------------
+;                       M O D U L E / B A T T E R Y 1
+;----------------------------------------------------------
+[module/battery1]
+type = internal/battery
+
+; This is useful in case the battery never reports 100% charge
+full-at = 99
+
+; Use the following command to list batteries and adapters:
+; $ ls -1 /sys/class/power_supply/
+battery = BAT1
+adapter = AD
+
+poll-interval = 5
+
+time-format = %H:%M
+
+format-charging = <animation-charging> <label-charging> |
+
+format-discharging = <ramp-capacity> <label-discharging> |
+
+;format-full = <ramp-capacity> <label-full>
+
+label-charging = %percentage%% 
+
+label-discharging = %percentage%% 
+
+label-full =  Fully charged
+
+; Only applies if <ramp-capacity> is used
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+
+; Only applies if <bar-capacity> is used
+bar-capacity-width = 1
+
+; Only applies if <animation-charging> is used
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+; Framerate in milliseconds
+animation-charging-framerate = 750
+
+; Only applies if <animation-discharging> is used
+animation-discharging-0 = 
+animation-discharging-1 = 
+animation-discharging-2 = 
+animation-discharging-3 = 
+animation-discharging-4 = 
+; Framerate in milliseconds
+animation-discharging-framerate = 500
+
+;----------------------------------------------------------
+;		        M O D U L E / B A T T E R Y C O M B I N E D
+;----------------------------------------------------------
+[module/battery-combined-udev]
+type = custom/script
+exec = ~/.config/polybar/scripts/battery-combined-udev.sh
+tail = true
+
+;----------------------------------------------------------
+;		        M O D U L E / W L A N
+;----------------------------------------------------------
 [module/wlan]
 type = internal/network
 interface = wlp3s0
-interval = 3.0
+interval = 2
 
 format-connected = <ramp-signal> <label-connected>
 format-connected-padding = 1
@@ -192,9 +385,11 @@ fmt-connected-foreground = #272827
 format-connected-background = #7E807E
 forrmat-connected-prefix = 
 format-connected-prefix-foreground = #272827
-label-connected = %{A1:nm-applet:}%essid% %local_ip%%downspeed:9%%{A}
+label-connected = %essid% %local_ip%%downspeed:9%
 label-connected-foreground = #eefafafa
 
+format-disconnected-prefix = " "
+format-disconnected-foreground = #66ffffff
 format-disconnected = <label-disconnected>
 label-disconnected = Disconnected
 label-disconnected-foreground = #66ffffff
@@ -205,10 +400,14 @@ ramp-signal-2 = 
 ramp-signal-3 = 
 ramp-signal-4 = 
 
+
+;----------------------------------------------------------
+;		        M O D U L E / E T H E R N E T
+;----------------------------------------------------------
 [module/eth]
 type = internal/network
 interface = enp0s25
-interval = 3.0
+interval = 2
 
 format-connected-padding = 1
 format-connected-foreground = #272827
@@ -218,10 +417,24 @@ format-connected-prefix-foreground = #272827
 label-connected = %local_ip%%downspeed:9%
 label-connected-foreground = #eefafafa
 
+format-disconnected-prefix = " "
+format-disconnected-foreground = #66ffffff
 format-disconnected = <label-disconnected>
 label-disconnected = LAN Disconnected
 label-disconnected-foreground = #66ffffff
 
+;----------------------------------------------------------
+;                       M O D U L E / D A T E P O P U P
+;----------------------------------------------------------
+[module/date-calendar]
+type = custom/script
+exec = ~/.config/polybar/scripts/popup-calendar.sh
+interval = 5
+click-left = ~/.config/polybar/scripts/popup-calendar.sh --popup &
+
+;----------------------------------------------------------
+;		        M O D U L E / D A T E T I M E
+;----------------------------------------------------------
 [module/date]
 type = internal/date
 interval = 5
@@ -239,39 +452,47 @@ format-padding = 2
 
 label = %date% %time%
 
+;----------------------------------------------------------
+;		        M O D U L E / P U L S E A U D I O 
+;----------------------------------------------------------
 [module/pulseaudio]
 type = internal/pulseaudio
 
 sink = alsa_output.pci-0000_12_00.3.analog-stereo
-
 use-ui-max = true
-
 interval = 5
 
-format-volume = <ramp-volume> <label-volume>
-
+format-volume =| <ramp-volume> <label-volume>
 format-muted = <label-muted>
 
-label-volume = %percentage%%
-
-
-label-muted = 🔇 mute
+label-volume =  %percentage%% |
+label-muted = |  muted |
 label-muted-foreground = #666
-ramp-volume-0 = 🔈
-ramp-volume-1 = 🔉
-ramp-volume-2 = 🔊
+
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
+
+; Only applies if <bar> is used
+bar-width = 10
+bar-indicator = |
+bar-fill = ─
+bar-empty = ─
 
 click-right = pavucontrol &
 
+;----------------------------------------------------------
+;		        M O D U L E / B A C K L I G H T
+;----------------------------------------------------------
 [module/backlight]
 type = internal/xbacklight
 
 output = eDP1
 
-enable-scroll = false
-format = <label> 
+enable-scroll = true
+format = <label>
 
-label = Brightness %percentage%% 
+label =  %percentage%% 
 
 ; Only applies if <ramp> is used
 ramp-0 = 🌕
@@ -286,6 +507,9 @@ bar-indicator = |
 bar-fill = ─
 bar-empty = ─
 
+;----------------------------------------------------------
+;		        M O D U L E / P O W E R M E N U
+;----------------------------------------------------------
 [module/powermenu]
 type = custom/menu
 
@@ -306,6 +530,8 @@ menu-0-1 = power off
 menu-0-1-exec = menu-open-2
 menu-0-2 = log off
 menu-0-2-exec = menu-open-3
+menu-0-3 = suspend
+menu-0-3-exec = menu-open-4
 
 menu-1-0 = cancel
 menu-1-0-exec = menu-open-0
@@ -322,9 +548,7 @@ menu-3-0-exec = pkill -KILL -u $USER
 menu-3-1 = cancel
 menu-3-1-exec = menu-open-0
 
-[settings]
-screenchange-reload = true
-
-[global/wm]
-margin-top = 0
-margin-bottom = 0
+menu-4-0 = suspend
+menu-4-0-exec = sudo pm-suspend
+menu-4-1 = cancel
+menu-4-1-exec = menu-open-0
